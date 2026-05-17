@@ -1,9 +1,49 @@
+import cosas.*
 import camion.*
 
-describe "group of test for camion" {
+describe "PRUEBAS DEL CAMION" {
 
-  test "first test" {
-    assert.that(true)
+method inicialite(){
+  bumblebee.formaActual.robot()
+  arenaAGranel.peso(150)
+  bateriaAntiaerea.tieneMisiles(true)
+  paqueteDeLadrillos.cantidadDeLadrillos(80)
+  embalajeDeSecurity.cosaContenida(paqueteDeLadrillos)
+  camion.agregarCosa(bumblebee)
+  camion.agregarCosa(arenaAGranel)
+  camion.agregarCosa(bateriaAntiaerea)
+  camion.agregarCosa(embalajeDeSecurity)
+
+
+
+}
+  test "peso total de camion (carga total +1000kg de tara)" {
+    assert.equals(2410, camion.pesoTotal())//1000+800+150+300+160=2410
   }
-
+  test "verificar si todos los pesos de la carga son numeros par" {
+    //arena(150)bateria(300),embalaje(160),buumblebee(800) tiene que dar true
+    assert.that(camion.todosPesosPares())
+  }
+  test "consultar si hay alguna cosa que pesa un determinado peso" {
+    assert.that(camion.hayAlgoQuePesa(150))//arena 150
+  }
+  test "obtener la primera cosa con un peligro en especifico" {
+    assert.equals(bateriaAntiaerea, camion.cosaConPeligrosidad(100))
+  }
+test "Cosas que superan un nivel de peligrosidad (.filter)" {
+    // Solo la batería (100) y Bumblebee (30) superan el peligro 15
+    const peligrosas = camion.cosasMasPeligrosasQueCosa(15)
+    assert.equals(2, peligrosas.size())
+    assert.that(peligrosas.contains(bateriaAntiaerea))
+    assert.that(peligrosas.contains(bumblebee))
+    }
+  test "Control de peso máximo permitido (Límite: 2500 kg)" {
+    // Como pesa 2410 kg, no está excedido
+    assert.notThat(camion.estaExcedido())
+  }
+  test "Validar si el camión puede circular en ruta según el peligro" {
+    // Si la ruta permite hasta peligro 120:
+    // Pesa 2410 (< 2500) y la cosa más peligrosa es la batería (100 < 120) -> Puede circular
+    assert.that(camion.puedeCircular(120))
+    }
 }

@@ -1,9 +1,42 @@
 import cosas.*
 
-describe "group of test for cosas" {
+describe "pruebas de las cosas individuales" {
 
-  test "first test" {
-    assert.that(true)
+  test "paquete de ladrillos con 50 ladrillos pesa 100kg" {
+    paqueteDeLadrillos.cantidadDeLadrillos(50)
+    assert.equals(100,paqueteDeLadrillos.peso() )
   }
+  test "peligrosidad de paquete de ladrillos es 2" {
+    assert.equals(2, paqueteDeLadrillos.peligrosidad())
+  }
+  test "Batería antiaérea: el peso y peligro cambian si tiene misiles" {
 
+    bateriaAntiaerea.tieneMisiles(true)
+    assert.equals(300, bateriaAntiaerea.peso())
+    assert.equals(100, bateriaAntiaerea.peligrosidad())}
+
+  test "Embalaje de seguridad: pesa lo mismo que su contenido y divide su peligro por 2" {
+    residuosRadioactivos.peso(30) // Residuos con 30 kg
+    embalajeDeSecurity.cosaContenida(residuosRadioactivos) // Metemos los residuos adentro del embalaje
+    
+    // Pesa lo mismo que los residuos (30 kg)
+    assert.equals(30, embalajeDeSecurity.peso())
+        // Peligrosidad de residuos (200) / 2 = 100
+    assert.equals(100, embalajeDeSecurity.peligrosidad())}
+
+  test "Contenedor portuario: peso acumulado (+100 de base) y peligro del elemento máximo" {
+    // Configuramos cosas para meter adentro
+    knight.peso() // 500 kg, peligro 10
+    arenaAGranel.peso(100) // 100 kg, peligro 1
+    
+    contenedorPortuario.agregarCosa(knight)
+    contenedorPortuario.agregarCosa(arenaAGranel)
+    
+    // Peso: 100 (base) + 500 (knight) + 100 (arena) = 700 kg
+    assert.equals(700, contenedorPortuario.peso())
+    // Peligrosidad: el máximo entre Knight (10) y Arena (1) es 10
+    assert.equals(10, contenedorPortuario.peligrosidad())
+  }
 }
+
+
